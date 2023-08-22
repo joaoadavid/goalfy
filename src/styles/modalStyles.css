@@ -1,0 +1,18 @@
+.titulo {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 10px; /* Espaçamento entre o ícone e o texto */
+  color: #7f23f7; /* Cor do ícone */
+}
+
+.label {
+  color: #666d73;
+}
+.botao-personalizado {
+  background-color: teal;
+  color: white;
+  /* outros estilos desejados */
+}

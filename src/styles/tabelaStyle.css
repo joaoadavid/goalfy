@@ -1,0 +1,10 @@
+.tabela-header {
+  align-items: center;
+  font-size: 15px;
+}
+
+.icone {
+  margin-right: 2px;
+  align-items: center; /* Espaçamento entre o ícone e o texto */
+}
+/* styles.css */
