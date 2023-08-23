@@ -5,8 +5,12 @@ import { BsAt } from "react-icons/bs";
 import { BsCardList } from "react-icons/bs";
 import { BsCursorText } from "react-icons/bs";
 import { BsTelephone } from "react-icons/bs";
+import { BsPlusCircle } from "react-icons/bs";
 import "../../styles/modalStyles.css";
 import "../../styles/tabelaStyle.css";
+import "../../styles/ButCadastrar.css";
+import "../../styles/ButNovo.css";
+
 
 
 class clientes extends React.Component {
@@ -63,7 +67,6 @@ class clientes extends React.Component {
           <th className="tabela-header">{<BsCardList className="icone" />}CNPJ</th>
           <th className="tabela-header">{<BsCursorText className="icone" />}Endereço</th>
           <th className="tabela-header">{<BsCursorText className="icone" />}Cidade</th>
-
         </tr>
       </thead>
       <tbody>
@@ -192,18 +195,16 @@ class clientes extends React.Component {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" type="submit" onClick={this.submit}>
-              Cadastrar
-            </Button>
+            <Button className="butCadastrar" variant="primary" type="submit" onClick={this.submit}> Cadastrar</Button>
           </Modal.Footer>
         </Modal>
-        <Button variant='primary' type="submit" onClick={this.abrirModal}>
-          Novo
+        <Button className="butNovo" variant='light' type="submit" onClick={this.abrirModal}>
+          <BsPlusCircle style={{ marginRight: '5px' }} /> Novo Registro
         </Button>
+
         {this.renderTabela()}
       </div>
     )
   }
 }
-
 export default clientes;

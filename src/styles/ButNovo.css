@@ -1,0 +1,12 @@
+.butNovo {
+  border: none;
+  background-color: #7f23f7;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin: 10px 20px 10px 120px;
+  width: 125px;
+  height: 25px;
+  font-size: 13px;
+}
