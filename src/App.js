@@ -1,8 +1,7 @@
-import Alunos from './componentes/Menu/Clientes';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Nav } from 'react-bootstrap';
+import Clientes from './componentes/Clientes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BsBoxArrowUpRight } from "react-icons/bs";
+import './App.css';
 
 function App() {
   return (
@@ -15,13 +14,7 @@ function App() {
         </h1>
       </div>
       <div className='safari'>
-        <BrowserRouter>
-          <Nav variant="tabs">
-          </Nav>
-          <Routes>
-            <Route path="/" element={<Alunos />} />
-          </Routes>
-        </BrowserRouter>
+        <Clientes />
       </div>
     </div>
   );

@@ -6,11 +6,8 @@ import { BsCardList } from "react-icons/bs";
 import { BsCursorText } from "react-icons/bs";
 import { BsTelephone } from "react-icons/bs";
 import { BsPlusCircle } from "react-icons/bs";
-import "../../styles/modalStyles.css";
-import "../../styles/tabelaStyle.css";
-import "../../styles/ButCadastrar.css";
-import "../../styles/ButNovo.css";
-
+import "../styles/modalStyles.css";
+import "../styles/tabelaStyle.css";
 
 
 class clientes extends React.Component {
@@ -56,19 +53,19 @@ class clientes extends React.Component {
       })
   }
 
-
   renderTabela() {
     return <Table bordered hover >
       <thead >
         <tr>
-          <th className="tabela-header">{<BsCursorText className="icone" />}Nome</th>
-          <th className="tabela-header">{<BsAt className="icone" />}Email</th>
-          <th className="tabela-header">{<BsTelephone className="icone" />}Telefone</th>
-          <th className="tabela-header">{<BsCardList className="icone" />}CNPJ</th>
-          <th className="tabela-header">{<BsCursorText className="icone" />}Endereço</th>
-          <th className="tabela-header">{<BsCursorText className="icone" />}Cidade</th>
-        </tr>
-      </thead>
+          <th>{<BsCursorText className="icone" />}Nome</th>
+          <th>{<BsAt className="icone" />}Email</th>
+          <th>{<BsTelephone className="icone" />}Telefone</th>
+          <th>{<BsCardList className="icone" />}CNPJ</th>
+          <th>{<BsCursorText className="icone" />}Endereço</th>
+          <th>{<BsCursorText className="icone" />}Cidade</th>
+
+        </tr >
+      </thead >
       <tbody>
         {this.state.clientes.map((cliente, index) => (
           <tr key={index}>
@@ -81,7 +78,7 @@ class clientes extends React.Component {
           </tr>
         ))}
       </tbody>
-    </Table>
+    </Table >
   }
 
   atualizaNome = (e) => {
@@ -118,18 +115,55 @@ class clientes extends React.Component {
   submit(event) {
     event.preventDefault();
 
+    const { nome, email, telefone, cnpj, endereco, cidade } = this.state;
+
+    if (!nome || !email || !telefone || !cnpj || !endereco || !cidade) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    if (!this.validarEmail(email)) {
+      alert('Por favor, insira um email válido.');
+      return;
+    }
+
+    if (!this.validarTelefone(telefone)) {
+      alert('Por favor, insira um telefone no formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX.');
+      return;
+    }
+
+    if (!this.validarCNPJ(cnpj)) {
+      alert('Por favor, insira um CNPJ no formato  XX.XXX.XXX/YYYY-ZZ');
+      return;
+    }
+
     const cliente = {
-      nome: this.state.nome,
-      email: this.state.email,
-      telefone: this.state.telefone,
-      cnpj: this.state.cnpj,
-      endereco: this.state.endereco,
-      cidade: this.state.cidade,
+      nome: nome,
+      email: email,
+      telefone: telefone,
+      cnpj: cnpj,
+      endereco: endereco,
+      cidade: cidade,
     };
 
     this.cadastrarCliente(cliente);
     this.fecharModal();
     this.reset();
+  }
+
+  validarEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  validarTelefone(telefone) {
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    return telefoneRegex.test(telefone);
+  }
+
+  validarCNPJ(cnpj) {
+    const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$|^\d{14}$/;
+    return cnpjRegex.test(cnpj);
   }
 
   reset = () => {
@@ -195,10 +229,40 @@ class clientes extends React.Component {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button className="butCadastrar" variant="primary" type="submit" onClick={this.submit}> Cadastrar</Button>
+            <Button style={{
+              border: 'none',
+              backgroundColor: '#7f23f7',
+              color: 'white',
+              cursor: 'pointer',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: '15px 20px 10px',
+              width: '427px',
+              height: '48px',
+              fontSize: '18px',
+            }} variant="primary" type="submit" onClick={this.submit}>
+              Cadastrar
+            </Button>
           </Modal.Footer>
         </Modal>
-        <Button className="butNovo" variant='light' type="submit" onClick={this.abrirModal}>
+        <Button
+          style={{
+            border: 'none',
+            backgroundColor: '#7f23f7',
+            color: 'white',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            margin: '10px 20px 10px 120px',
+            width: '125px',
+            height: '25px',
+            fontSize: '13px',
+          }}
+          variant='none'
+          type="submit"
+          onClick={this.abrirModal}
+        >
           <BsPlusCircle style={{ marginRight: '5px' }} /> Novo Registro
         </Button>
 
@@ -207,4 +271,5 @@ class clientes extends React.Component {
     )
   }
 }
+
 export default clientes;
