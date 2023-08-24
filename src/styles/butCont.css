@@ -1,0 +1,17 @@
+.botao-e-contador {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.contador {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #888;
+}
+.buscar {
+  border-radius: 5px;
+  width: 168px;
+  height: 20px;
+}

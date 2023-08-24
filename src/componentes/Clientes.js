@@ -1,14 +1,13 @@
 import React from "react"
 import { Form, Button, Modal } from "react-bootstrap";
-import { BsBoxArrowUpRight } from "react-icons/bs";
-import { BsAt } from "react-icons/bs";
-import { BsCardList } from "react-icons/bs";
-import { BsCursorText } from "react-icons/bs";
-import { BsTelephone } from "react-icons/bs";
-import { BsPlusCircle } from "react-icons/bs";
+import {
+  BsBoxArrowUpRight, BsAt, BsCardList, BsCursorText,
+  BsTelephone, BsPlusCircle,
+} from "react-icons/bs";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import "../styles/modalStyles.css";
 import "../styles/tabelaStyle.css";
+import "../styles/butCont.css";
 
 
 class clientes extends React.Component {
@@ -24,6 +23,7 @@ class clientes extends React.Component {
       clientes: [],
       cep: '', // Adicione o estado para o CEP
       estado: '',
+      searchTerm: '',
       modalAberta: false
     }
   }
@@ -57,34 +57,41 @@ class clientes extends React.Component {
   }
 
   renderTabela() {
-    return <div className="tabela">
-      <MDBTable >
-        <MDBTableHead className="cabecalho">
-          <tr>
-            <th>{<BsCursorText className="icone" />}Nome</th>
-            <th>{<BsAt className="icone" />}Email</th>
-            <th>{<BsTelephone className="icone" />}Telefone</th>
-            <th>{<BsCardList className="icone" />}CNPJ</th>
-            <th>{<BsCursorText className="icone" />}Endereço</th>
-            <th>{<BsCursorText className="icone" />}Cidade</th>
+    const { clientes, searchTerm } = this.state;
+    const registrosFiltrados = clientes.filter((cliente) =>
+      cliente.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-          </tr >
-        </MDBTableHead>
-        <MDBTableBody className=".tabela">
-          {this.state.clientes.map((cliente, index) => (
-            <tr className='table-light' key={index}>
-              <td >{cliente.nome}</td>
-              <td>{cliente.email}</td>
-              <td>{cliente.endereco}</td>
-              <td>{cliente.telefone}</td>
-              <td>{cliente.cnpj}</td>
-              <td>{cliente.cidade}</td>
+    return (
+      <div className="tabela">
+        <MDBTable>
+          <MDBTableHead className="cabecalho">
+            <tr>
+              <th>{<BsCursorText className="icone" />}Nome</th>
+              <th>{<BsAt className="icone" />}Email</th>
+              <th>{<BsTelephone className="icone" />}Telefone</th>
+              <th>{<BsCardList className="icone" />}CNPJ</th>
+              <th>{<BsCursorText className="icone" />}Endereço</th>
+              <th>{<BsCursorText className="icone" />}Cidade</th>
             </tr>
-          ))}
-        </MDBTableBody>
-      </MDBTable>
-    </div>
+          </MDBTableHead>
+          <MDBTableBody className=".tabela">
+            {registrosFiltrados.map((cliente, index) => (
+              <tr className='table-light' key={index}>
+                <td>{cliente.nome}</td>
+                <td>{cliente.email}</td>
+                <td>{cliente.endereco}</td>
+                <td>{cliente.telefone}</td>
+                <td>{cliente.cnpj}</td>
+                <td>{cliente.cidade}</td>
+              </tr>
+            ))}
+          </MDBTableBody>
+        </MDBTable>
+      </div>
+    );
   }
+
   atualizarCampo = (campo, valor) => {
     this.setState({
       [campo]: valor
@@ -105,14 +112,12 @@ class clientes extends React.Component {
           endereco: dados.logradouro,
           cidade: dados.localidade,
           estado: dados.uf
-          // Adicione outros estados de endereço, se necessário (bairro, complemento, etc.)
         });
       })
       .catch(erro => {
         console.error("Erro ao buscar endereço:", erro);
       });
   }
-
   submit(event) {
     event.preventDefault();
 
@@ -158,6 +163,9 @@ class clientes extends React.Component {
     this.reset();
   }
 
+  quantidadeDeRegistros() {
+    return this.state.clientes.length;
+  }
 
   validarEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -197,6 +205,11 @@ class clientes extends React.Component {
     this.setState({
       modalAberta: true
     })
+  }
+  atualizarTermoDePesquisa = (valor) => {
+    this.setState({
+      searchTerm: valor
+    });
   }
 
   render() {
@@ -258,25 +271,37 @@ class clientes extends React.Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Button
-          style={{
-            border: 'none',
-            backgroundColor: '#7f23f7',
-            color: 'white',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            margin: '10px 20px 10px 120px',
-            width: '125px',
-            height: '25px',
-            fontSize: '13px',
-          }}
-          variant='none'
-          type="submit"
-          onClick={this.abrirModal}
-        >
-          <BsPlusCircle style={{ marginRight: '5px' }} /> Novo Registro
-        </Button>
+
+        <div className="botao-e-contador">
+          <Button
+            style={{
+              border: 'none',
+              backgroundColor: '#7f23f7',
+              color: 'white',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              margin: '10px 20px 10px 120px',
+              width: '125px',
+              height: '25px',
+              fontSize: '13px',
+            }}
+            variant='none' type="submit"
+            onClick={this.abrirModal}
+          >
+            <BsPlusCircle style={{ marginRight: '5px' }} /> Novo Registro
+          </Button>
+
+          <input className=" buscar" type="text"
+            placeholder="Buscar..."
+            value={this.state.searchTerm}
+            onChange={(e) => this.atualizarTermoDePesquisa(e.target.value)}
+          />
+
+
+          <span className="contador"> {this.state.clientes.length} Registros</span>
+        </div>
+
 
         {this.renderTabela()}
       </div>
