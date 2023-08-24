@@ -21,6 +21,8 @@ class clientes extends React.Component {
       endereco: '',
       cidade: '',
       clientes: [],
+      cep: '', // Adicione o estado para o CEP
+      estado: '',
       modalAberta: false
     }
   }
@@ -101,6 +103,11 @@ class clientes extends React.Component {
       cnpj: e.target.value
     })
   }
+  atualizaCep = (e) => {
+    this.setState({
+      cep: e.target.value
+    });
+  }
   atualizaEndereco = (e) => {
     this.setState({
       endereco: e.target.value
@@ -111,13 +118,34 @@ class clientes extends React.Component {
       cidade: e.target.value
     })
   }
+  buscarEnderecoPorCep = () => {
+    const { cep } = this.state;
+
+    if (cep.length === 8) {
+      fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(resposta => resposta.json())
+        .then(dados => {
+          this.setState({
+            endereco: dados.logradouro,
+            cidade: dados.localidade,
+            estado: dados.uf
+            // Adicione outros estados de endereço, se necessário (bairro, complemento, etc.)
+          });
+        })
+        .catch(erro => {
+          console.error("Erro ao buscar endereço:", erro);
+        });
+    }
+  }
+
+
 
   submit(event) {
     event.preventDefault();
 
-    const { nome, email, telefone, cnpj, endereco, cidade } = this.state;
+    const { nome, email, telefone, cnpj, cep, cidade } = this.state;
 
-    if (!nome || !email || !telefone || !cnpj || !endereco || !cidade) {
+    if (!nome || !email || !telefone || !cnpj || !cep || !cidade) {
       alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
@@ -137,12 +165,15 @@ class clientes extends React.Component {
       return;
     }
 
+    // Chamar a função para buscar o endereço pelo CEP
+    this.buscarEnderecoPorCep();
+
     const cliente = {
       nome: nome,
       email: email,
       telefone: telefone,
       cnpj: cnpj,
-      endereco: endereco,
+      endereco: this.state.endereco, // Preenchido pela função buscarEnderecoPorCep
       cidade: cidade,
     };
 
@@ -150,6 +181,7 @@ class clientes extends React.Component {
     this.fecharModal();
     this.reset();
   }
+
 
   validarEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -172,6 +204,7 @@ class clientes extends React.Component {
       email: '',
       telefone: '',
       cnpj: '',
+      cep: '',
       endereco: '',
       cidade: ''
     }
@@ -218,6 +251,18 @@ class clientes extends React.Component {
                 <Form.Label>CNPJ</Form.Label>
                 <Form.Control type="text" placeholder="Digite aqui..." value={this.state.cnpj} onChange={this.atualizaCNPJ} />
               </Form.Group>
+              <Form.Group className="mb-3" controlId="formCep">
+                <Form.Label>CEP</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Digite o CEP..."
+                  value={this.state.cep}
+                  onChange={this.atualizaCep}
+                  onBlur={this.buscarEnderecoPorCep} // Adicione esta linha
+                />
+              </Form.Group>
+
+
               <Form.Group className="mb-3" controlId="formEndereco">
                 <Form.Label>Endereço</Form.Label>
                 <Form.Control type="text" placeholder="Digite aqui..." value={this.state.endereco} onChange={this.atualizaEndereco} />
