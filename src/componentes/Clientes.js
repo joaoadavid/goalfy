@@ -82,41 +82,10 @@ class clientes extends React.Component {
       </tbody>
     </Table >
   }
-
-  atualizaNome = (e) => {
+  atualizarCampo = (campo, valor) => {
     this.setState({
-      nome: e.target.value
-    })
-  }
-  atualizaEmail = (e) => {
-    this.setState({
-      email: e.target.value
-    })
-  }
-  atualizaTelefone = (e) => {
-    this.setState({
-      telefone: e.target.value
-    })
-  }
-  atualizaCNPJ = (e) => {
-    this.setState({
-      cnpj: e.target.value
-    })
-  }
-  atualizaCep = (e) => {
-    this.setState({
-      cep: e.target.value
+      [campo]: valor
     });
-  }
-  atualizaEndereco = (e) => {
-    this.setState({
-      endereco: e.target.value
-    })
-  }
-  atualizaCidade = (e) => {
-    this.setState({
-      cidade: e.target.value
-    })
   }
   buscarEnderecoPorCep = () => {
     const { cep } = this.state;
@@ -137,9 +106,6 @@ class clientes extends React.Component {
         });
     }
   }
-
-
-
   submit(event) {
     event.preventDefault();
 
@@ -237,19 +203,19 @@ class clientes extends React.Component {
             <Form>
               <Form.Group className="mb-3" controlId="formNome">
                 <Form.Label className="label">Nome</Form.Label>
-                <Form.Control type="text" placeholder=" Digite aqui..." value={this.state.nome} onChange={this.atualizaNome} />
+                <Form.Control type="text" placeholder=" Digite aqui..." value={this.state.nome} onChange={(e) => this.atualizarCampo('nome', e.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formEmail">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="Digite aqui..." value={this.state.email} onChange={this.atualizaEmail} />
+                <Form.Control type="email" placeholder="Digite aqui..." value={this.state.email} onChange={(e) => this.atualizarCampo('email', e.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formTelefone">
                 <Form.Label>Telefone</Form.Label>
-                <Form.Control type="tel" placeholder="Digite aqui..." value={this.state.telefone} onChange={this.atualizaTelefone} />
+                <Form.Control type="tel" placeholder="Digite aqui..." value={this.state.telefone} onChange={(e) => this.atualizarCampo('telefone', e.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formCNPJ">
                 <Form.Label>CNPJ</Form.Label>
-                <Form.Control type="text" placeholder="Digite aqui..." value={this.state.cnpj} onChange={this.atualizaCNPJ} />
+                <Form.Control type="text" placeholder="Digite aqui..." value={this.state.cnpj} onChange={(e) => this.atualizarCampo('cnpj', e.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formCep">
                 <Form.Label>CEP</Form.Label>
@@ -257,19 +223,17 @@ class clientes extends React.Component {
                   type="text"
                   placeholder="Digite o CEP..."
                   value={this.state.cep}
-                  onChange={this.atualizaCep}
+                  onChange={(e) => this.atualizarCampo('cep', e.target.value)}
                   onBlur={this.buscarEnderecoPorCep} // Adicione esta linha
                 />
               </Form.Group>
-
-
               <Form.Group className="mb-3" controlId="formEndereco">
                 <Form.Label>Endereço</Form.Label>
-                <Form.Control type="text" placeholder="Digite aqui..." value={this.state.endereco} onChange={this.atualizaEndereco} />
+                <Form.Control type="text" placeholder="Digite aqui..." value={this.state.endereco} onChange={(e) => this.atualizarCampo('endereco', e.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formCidade">
                 <Form.Label>Cidade</Form.Label>
-                <Form.Control type="text" placeholder="Digite aqui..." value={this.state.cidade} onChange={this.atualizaCidade} />
+                <Form.Control type="text" placeholder="Digite aqui..." value={this.state.cidade} onChange={(e) => this.atualizarCampo('cidade', e.target.value)} />
               </Form.Group>
             </Form>
           </Modal.Body>
