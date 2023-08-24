@@ -1,6 +1,13 @@
 .tabela {
-  margin: 10px 400px 0px 120px;
+  margin: 10px 400px 10px 120px;
   align-items: center;
+}
+.cabecalho {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px; /* Ajuste a espessura e a cor da borda conforme necessário */
+}
+.borda {
+  border-right: 1px solid rgb(190, 190, 190);
 }
 
 .icone {

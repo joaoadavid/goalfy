@@ -1,11 +1,12 @@
 import React from "react"
-import { Table, Form, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 import { BsAt } from "react-icons/bs";
 import { BsCardList } from "react-icons/bs";
 import { BsCursorText } from "react-icons/bs";
 import { BsTelephone } from "react-icons/bs";
 import { BsPlusCircle } from "react-icons/bs";
+import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import "../styles/modalStyles.css";
 import "../styles/tabelaStyle.css";
 
@@ -56,31 +57,32 @@ class clientes extends React.Component {
   }
 
   renderTabela() {
-    return <div className="tabela"> <Table bordered hover >
-      <thead >
-        <tr >
-          <th>{<BsCursorText className="icone" />}Nome</th>
-          <th>{<BsAt className="icone" />}Email</th>
-          <th>{<BsTelephone className="icone" />}Telefone</th>
-          <th>{<BsCardList className="icone" />}CNPJ</th>
-          <th>{<BsCursorText className="icone" />}Endereço</th>
-          <th>{<BsCursorText className="icone" />}Cidade</th>
+    return <div className="tabela">
+      <MDBTable >
+        <MDBTableHead className="cabecalho">
+          <tr>
+            <th>{<BsCursorText className="icone" />}Nome</th>
+            <th>{<BsAt className="icone" />}Email</th>
+            <th>{<BsTelephone className="icone" />}Telefone</th>
+            <th>{<BsCardList className="icone" />}CNPJ</th>
+            <th>{<BsCursorText className="icone" />}Endereço</th>
+            <th>{<BsCursorText className="icone" />}Cidade</th>
 
-        </tr >
-      </thead >
-      <tbody>
-        {this.state.clientes.map((cliente, index) => (
-          <tr key={index}>
-            <td >{cliente.nome}</td>
-            <td>{cliente.email}</td>
-            <td>{cliente.endereco}</td>
-            <td>{cliente.telefone}</td>
-            <td>{cliente.cnpj}</td>
-            <td>{cliente.cidade}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table >
+          </tr >
+        </MDBTableHead>
+        <MDBTableBody className=".tabela">
+          {this.state.clientes.map((cliente, index) => (
+            <tr className='table-light' key={index}>
+              <td >{cliente.nome}</td>
+              <td>{cliente.email}</td>
+              <td>{cliente.endereco}</td>
+              <td>{cliente.telefone}</td>
+              <td>{cliente.cnpj}</td>
+              <td>{cliente.cidade}</td>
+            </tr>
+          ))}
+        </MDBTableBody>
+      </MDBTable>
     </div>
   }
   atualizarCampo = (campo, valor) => {
