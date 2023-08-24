@@ -9,11 +9,15 @@
   font-size: 18px;
 }
 
-.vertical-line {
+.linha-vertical {
   width: 1px;
   height: 18px; /* Ajuste a altura conforme necessário */
   background-color: #ccc; /* Cor da linha */
   margin: 0 10px;
+}
+.linha-horizontal {
+  border-bottom: 1px solid #ccc;
+  margin: 10px 0; /* Adicione um espaçamento acima e abaixo */
 }
 
 .cliente-header {

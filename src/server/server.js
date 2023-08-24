@@ -21,10 +21,10 @@ connection.connect(err => {
 });
 
 app.use(cors());
-app.use(express.json()); // Middleware para processar o corpo das requisições como JSON
+app.use(express.json());
 
 // Rota para obter todos os clientes
-app.get('/clientes', (req, res) => {
+app.get('/clientes', (_, res) => {
   const query = 'SELECT * FROM clientes';
   connection.query(query, (err, results) => {
     if (err) {
@@ -39,11 +39,9 @@ app.get('/clientes', (req, res) => {
 // Rota para cadastrar um novo cliente
 app.post('/clientes', (req, res) => {
   const novoCliente = req.body;
-
   const insertQuery = 'INSERT INTO clientes (nome, email, telefone, cnpj, endereco, cidade) VALUES (?, ?, ?, ?, ?, ?)';
   const values = [novoCliente.nome, novoCliente.email, novoCliente.telefone, novoCliente.cnpj, novoCliente.endereco, novoCliente.cidade];
-
-  connection.query(insertQuery, values, (err, result) => {
+  connection.query(insertQuery, values, (err) => {
     if (err) {
       console.error('Erro ao inserir cliente:', err);
       res.status(500).json({ error: 'Erro ao cadastrar cliente' });

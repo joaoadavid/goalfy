@@ -56,9 +56,9 @@ class clientes extends React.Component {
   }
 
   renderTabela() {
-    return <Table bordered hover >
+    return <div className="tabela"> <Table bordered hover >
       <thead >
-        <tr>
+        <tr >
           <th>{<BsCursorText className="icone" />}Nome</th>
           <th>{<BsAt className="icone" />}Email</th>
           <th>{<BsTelephone className="icone" />}Telefone</th>
@@ -71,7 +71,7 @@ class clientes extends React.Component {
       <tbody>
         {this.state.clientes.map((cliente, index) => (
           <tr key={index}>
-            <td variant="dark">{cliente.nome}</td>
+            <td >{cliente.nome}</td>
             <td>{cliente.email}</td>
             <td>{cliente.endereco}</td>
             <td>{cliente.telefone}</td>
@@ -81,6 +81,7 @@ class clientes extends React.Component {
         ))}
       </tbody>
     </Table >
+    </div>
   }
   atualizarCampo = (campo, valor) => {
     this.setState({
@@ -90,22 +91,26 @@ class clientes extends React.Component {
   buscarEnderecoPorCep = () => {
     const { cep } = this.state;
 
-    if (cep.length === 8) {
-      fetch(`https://viacep.com.br/ws/${cep}/json/`)
-        .then(resposta => resposta.json())
-        .then(dados => {
-          this.setState({
-            endereco: dados.logradouro,
-            cidade: dados.localidade,
-            estado: dados.uf
-            // Adicione outros estados de endereço, se necessário (bairro, complemento, etc.)
-          });
-        })
-        .catch(erro => {
-          console.error("Erro ao buscar endereço:", erro);
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then(resposta => resposta.json())
+      .then(dados => {
+        if (dados.erro) {
+          alert('CEP inexistente ou inválido.');
+          return;
+        }
+
+        this.setState({
+          endereco: dados.logradouro,
+          cidade: dados.localidade,
+          estado: dados.uf
+          // Adicione outros estados de endereço, se necessário (bairro, complemento, etc.)
         });
-    }
+      })
+      .catch(erro => {
+        console.error("Erro ao buscar endereço:", erro);
+      });
   }
+
   submit(event) {
     event.preventDefault();
 
@@ -130,8 +135,11 @@ class clientes extends React.Component {
       alert('Por favor, insira um CNPJ no formato  XX.XXX.XXX/YYYY-ZZ');
       return;
     }
+    if (cep.length !== 8 || !/^\d+$/.test(cep)) {
+      alert('Por favor, insira um CEP válido.');
+      return;
+    }
 
-    // Chamar a função para buscar o endereço pelo CEP
     this.buscarEnderecoPorCep();
 
     const cliente = {
@@ -192,7 +200,6 @@ class clientes extends React.Component {
   render() {
     return (
       <div>
-
         <Modal show={this.state.modalAberta} onHide={this.fecharModal}>
           <Modal.Header closeButton>
             <Modal.Title className="titulo">
@@ -219,13 +226,7 @@ class clientes extends React.Component {
               </Form.Group>
               <Form.Group className="mb-3" controlId="formCep">
                 <Form.Label>CEP</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Digite o CEP..."
-                  value={this.state.cep}
-                  onChange={(e) => this.atualizarCampo('cep', e.target.value)}
-                  onBlur={this.buscarEnderecoPorCep} // Adicione esta linha
-                />
+                <Form.Control type="text" placeholder="Digite o aqui..." value={this.state.cep} onChange={(e) => this.atualizarCampo('cep', e.target.value)} onBlur={this.buscarEnderecoPorCep} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formEndereco">
                 <Form.Label>Endereço</Form.Label>
@@ -280,5 +281,7 @@ class clientes extends React.Component {
     )
   }
 }
+
+
 
 export default clientes;

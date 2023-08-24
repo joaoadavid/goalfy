@@ -1,10 +1,9 @@
-.tabela-header {
+.tabela {
+  margin: 10px 400px 0px 120px;
   align-items: center;
-  font-size: 15px;
 }
 
 .icone {
   margin-right: 2px;
   align-items: center; /* Espaçamento entre o ícone e o texto */
 }
-/* styles.css */
