@@ -21,7 +21,7 @@ class clientes extends React.Component {
       endereco: '',
       cidade: '',
       clientes: [],
-      cep: '', // Adicione o estado para o CEP
+      cep: '',
       estado: '',
       buscarItem: '',
       modalAberta: false
@@ -59,7 +59,7 @@ class clientes extends React.Component {
   renderTabela() {
     const { clientes, buscarItem } = this.state;
     const registrosFiltrados = clientes.filter((cliente) => {
-      const termoBusca = buscarItem.toLowerCase()
+      const termoBusca = buscarItem.toLowerCase()//Transforma o buscar item
       return (
         cliente.nome.toLowerCase().includes(termoBusca) ||
         cliente.email.toLowerCase().includes(termoBusca) ||
@@ -112,19 +112,18 @@ class clientes extends React.Component {
       .then(resposta => resposta.json())
       .then(dados => {
         if (dados.erro) {
-          alert('CEP inexistente ou inválido.')
-          return;
+          console.error('CEP inexistente ou inválido.');
+        } else {
+          this.setState({
+            endereco: dados.logradouro,
+            cidade: dados.localidade,
+          });
         }
-
-        this.setState({
-          endereco: dados.logradouro,
-          cidade: dados.localidade,
-          estado: dados.uf
-        });
       })
       .catch(erro => {
-        console.error("Erro ao buscar endereço:", erro)
-      })
+        console.error("Erro ao buscar endereço:", erro);
+      });
+
   }
   submit(event) {
     event.preventDefault();
@@ -176,18 +175,18 @@ class clientes extends React.Component {
   }
 
   validarEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
+    const padraoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return padraoEmail.test(email)
   }
 
   validarTelefone(telefone) {
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/
-    return telefoneRegex.test(telefone)
+    const padraoTelefone = /^\(\d{2}\) \d{4,5}-\d{4}$/
+    return padraoTelefone.test(telefone)
   }
 
   validarCNPJ(cnpj) {
-    const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$|^\d{14}$/
-    return cnpjRegex.test(cnpj)
+    const padraoCNPJ = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$|^\d{14}$/
+    return padraoCNPJ.test(cnpj)
   }
 
   reset = () => {
@@ -214,6 +213,8 @@ class clientes extends React.Component {
       modalAberta: true
     })
   }
+
+  //Atualiza a interface conforme a pesquisa do usuário
   atualizarTermoDePesquisa = (valor) => {
     this.setState({
       buscarItem: valor
