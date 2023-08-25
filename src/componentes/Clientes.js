@@ -1,13 +1,13 @@
 import React from "react"
-import { Form, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap"
 import {
   BsBoxArrowUpRight, BsAt, BsCardList, BsCursorText,
   BsTelephone, BsPlusCircle,
-} from "react-icons/bs";
-import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
-import "../styles/modal.css";
-import "../styles/tabela.css";
-import "../styles/botao-contador.css";
+} from "react-icons/bs"
+import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit'
+import "../styles/modal.css"
+import "../styles/tabela.css"
+import "../styles/botao-contador.css"
 
 
 class clientes extends React.Component {
@@ -30,7 +30,7 @@ class clientes extends React.Component {
 
   componentDidMount() {
     this.buscarCliente();
-    this.submit = this.submit.bind(this);
+    this.submit = this.submit.bind(this)
   }
   buscarCliente = () => {
     fetch("http://localhost:3001/clientes")
@@ -39,7 +39,7 @@ class clientes extends React.Component {
         this.setState({ clientes: dados })
       })
       .catch(erro => {
-        console.error("Erro ao buscar clientes:", erro);
+        console.error("Erro ao buscar clientes:", erro)
       });
   }
 
@@ -51,7 +51,7 @@ class clientes extends React.Component {
     })
       .then(resposta => {
         if (resposta.ok) {
-          this.buscarCliente();
+          this.buscarCliente()
         }
       })
   }
@@ -59,7 +59,7 @@ class clientes extends React.Component {
   renderTabela() {
     const { clientes, buscarItem } = this.state;
     const registrosFiltrados = clientes.filter((cliente) => {
-      const termoBusca = buscarItem.toLowerCase();
+      const termoBusca = buscarItem.toLowerCase()
       return (
         cliente.nome.toLowerCase().includes(termoBusca) ||
         cliente.email.toLowerCase().includes(termoBusca) ||
@@ -67,8 +67,8 @@ class clientes extends React.Component {
         cliente.telefone.includes(buscarItem) ||
         cliente.cnpj.includes(buscarItem) ||
         cliente.cidade.toLowerCase().includes(termoBusca)
-      );
-    });
+      )
+    })
 
     return (
       <div className="tabela">
@@ -97,7 +97,7 @@ class clientes extends React.Component {
           </MDBTableBody>
         </MDBTable>
       </div>
-    );
+    )
   }
 
   atualizarCampo = (campo, valor) => {
@@ -112,7 +112,7 @@ class clientes extends React.Component {
       .then(resposta => resposta.json())
       .then(dados => {
         if (dados.erro) {
-          alert('CEP inexistente ou inválido.');
+          alert('CEP inexistente ou inválido.')
           return;
         }
 
@@ -123,7 +123,7 @@ class clientes extends React.Component {
         });
       })
       .catch(erro => {
-        console.error("Erro ao buscar endereço:", erro);
+        console.error("Erro ao buscar endereço:", erro)
       });
   }
   submit(event) {
@@ -132,30 +132,30 @@ class clientes extends React.Component {
     const { nome, email, telefone, cnpj, cep, cidade } = this.state;
 
     if (!nome || !email || !telefone || !cnpj || !cep || !cidade) {
-      alert('Por favor, preencha todos os campos obrigatórios.');
+      alert('Por favor, preencha todos os campos obrigatórios.')
       return;
     }
 
     if (!this.validarEmail(email)) {
-      alert('Por favor, insira um email válido.');
+      alert('Por favor, insira um email válido.')
       return;
     }
 
     if (!this.validarTelefone(telefone)) {
-      alert('Por favor, insira um telefone no formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX.');
+      alert('Por favor, insira um telefone no formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX.')
       return;
     }
 
     if (!this.validarCNPJ(cnpj)) {
-      alert('Por favor, insira um CNPJ no formato  XX.XXX.XXX/YYYY-ZZ');
+      alert('Por favor, insira um CNPJ no formato  XX.XXX.XXX/YYYY-ZZ')
       return;
     }
     if (cep.length !== 8 || !/^\d+$/.test(cep)) {
-      alert('Por favor, insira um CEP válido.');
+      alert('Por favor, insira um CEP válido.')
       return;
     }
 
-    this.buscarEnderecoPorCep();
+    this.buscarEnderecoPorCep()
 
     const cliente = {
       nome: nome,
@@ -166,27 +166,27 @@ class clientes extends React.Component {
       cidade: cidade,
     };
 
-    this.cadastrarCliente(cliente);
-    this.fecharModal();
-    this.reset();
+    this.cadastrarCliente(cliente)
+    this.fecharModal()
+    this.reset()
   }
 
   quantidadeDeRegistros() {
-    return this.state.clientes.length;
+    return this.state.clientes.length
   }
 
   validarEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email);
   }
 
   validarTelefone(telefone) {
-    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/
     return telefoneRegex.test(telefone);
   }
 
   validarCNPJ(cnpj) {
-    const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$|^\d{14}$/;
+    const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$|^\d{14}$/
     return cnpjRegex.test(cnpj);
   }
 

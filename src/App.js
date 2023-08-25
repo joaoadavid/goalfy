@@ -1,7 +1,7 @@
-import Clientes from './componentes/Clientes';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BsBoxArrowUpRight } from "react-icons/bs";
-import './App.css';
+import Clientes from './componentes/Clientes'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { BsBoxArrowUpRight } from "react-icons/bs"
+import './App.css'
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <Clientes />
       </div>
     </div>
-  );
+  )
 }
 
 

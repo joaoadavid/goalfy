@@ -1,8 +1,8 @@
-const express = require('express');
-const mysql = require('mysql2');
-const cors = require('cors');
-const app = express();
-const port = 3001;
+const express = require('express')
+const mysql = require('mysql2')
+const cors = require('cors')
+const app = express()
+const port = 3001
 
 // Configuração da conexão com o banco de dados
 const connection = mysql.createConnection({
@@ -14,45 +14,45 @@ const connection = mysql.createConnection({
 
 connection.connect(err => {
   if (err) {
-    console.error('Erro ao conectar ao banco de dados:', err);
+    console.error('Erro ao conectar ao banco de dados:', err)
   } else {
-    console.log('Conexão com o banco de dados estabelecida');
+    console.log('Conexão com o banco de dados estabelecida')
   }
 });
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json())
 
 // Rota para obter todos os clientes
 app.get('/clientes', (_, res) => {
-  const query = 'SELECT * FROM clientes';
+  const query = 'SELECT * FROM clientes'
   connection.query(query, (err, results) => {
     if (err) {
-      console.error('Erro ao executar consulta:', err);
-      res.status(500).json({ error: 'Erro ao buscar clientes' });
+      console.error('Erro ao executar consulta:', err)
+      res.status(500).json({ error: 'Erro ao buscar clientes' })
     } else {
-      res.json(results);
+      res.json(results)
     }
   });
 });
 
 // Rota para cadastrar um novo cliente
 app.post('/clientes', (req, res) => {
-  const novoCliente = req.body;
+  const novoCliente = req.body
   const insertQuery = 'INSERT INTO clientes (nome, email, telefone, cnpj, endereco, cidade) VALUES (?, ?, ?, ?, ?, ?)';
-  const values = [novoCliente.nome, novoCliente.email, novoCliente.telefone, novoCliente.cnpj, novoCliente.endereco, novoCliente.cidade];
+  const values = [novoCliente.nome, novoCliente.email, novoCliente.telefone, novoCliente.cnpj, novoCliente.endereco, novoCliente.cidade]
   connection.query(insertQuery, values, (err) => {
     if (err) {
       console.error('Erro ao inserir cliente:', err);
       res.status(500).json({ error: 'Erro ao cadastrar cliente' });
     } else {
       console.log('Cliente cadastrado com sucesso');
-      res.json({ message: 'Cliente cadastrado com sucesso', cliente: novoCliente });
+      res.json({ message: 'Cliente cadastrado com sucesso', cliente: novoCliente })
     }
-  });
-});
+  })
+})
 
 // Iniciar o servidor
 app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+  console.log(`Servidor rodando na porta ${port}`)
 });
