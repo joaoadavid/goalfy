@@ -88,9 +88,9 @@ class clientes extends React.Component {
               <tr className='table-light' key={index}>
                 <td>{cliente.nome}</td>
                 <td>{cliente.email}</td>
-                <td>{cliente.endereco}</td>
                 <td>{cliente.telefone}</td>
                 <td>{cliente.cnpj}</td>
+                <td>{cliente.endereco}</td>
                 <td>{cliente.cidade}</td>
               </tr>
             ))}
@@ -297,9 +297,12 @@ class clientes extends React.Component {
             variant='none' type="submit" onClick={this.abrirModal}>
             <BsPlusCircle style={{ marginRight: '5px' }} /> Novo Registro
           </Button>
+
           <input className=" buscar" type="text" placeholder="Buscar..." value={this.state.buscarItem}
             onChange={(e) => this.atualizarTermoDePesquisa(e.target.value)} />
+
           <span className="contador"> {this.state.clientes.length} Registros</span>
+
         </div>
         {this.renderTabela()}
       </div>
