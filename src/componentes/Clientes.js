@@ -29,7 +29,7 @@ class clientes extends React.Component {
   }
 
   componentDidMount() {
-    this.buscarCliente();
+    this.buscarCliente()
     this.submit = this.submit.bind(this)
   }
   buscarCliente = () => {
@@ -106,7 +106,7 @@ class clientes extends React.Component {
     });
   }
   buscarEnderecoPorCep = () => {
-    const { cep } = this.state;
+    const { cep } = this.state
 
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
       .then(resposta => resposta.json())
@@ -124,12 +124,12 @@ class clientes extends React.Component {
       })
       .catch(erro => {
         console.error("Erro ao buscar endereço:", erro)
-      });
+      })
   }
   submit(event) {
     event.preventDefault();
 
-    const { nome, email, telefone, cnpj, cep, cidade } = this.state;
+    const { nome, email, telefone, cnpj, cep, cidade } = this.state
 
     if (!nome || !email || !telefone || !cnpj || !cep || !cidade) {
       alert('Por favor, preencha todos os campos obrigatórios.')
@@ -177,17 +177,17 @@ class clientes extends React.Component {
 
   validarEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email);
+    return emailRegex.test(email)
   }
 
   validarTelefone(telefone) {
     const telefoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/
-    return telefoneRegex.test(telefone);
+    return telefoneRegex.test(telefone)
   }
 
   validarCNPJ(cnpj) {
     const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$|^\d{14}$/
-    return cnpjRegex.test(cnpj);
+    return cnpjRegex.test(cnpj)
   }
 
   reset = () => {
