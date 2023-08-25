@@ -5,9 +5,9 @@ import {
   BsTelephone, BsPlusCircle,
 } from "react-icons/bs";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
-import "../styles/modalStyles.css";
-import "../styles/tabelaStyle.css";
-import "../styles/butCont.css";
+import "../styles/modal.css";
+import "../styles/tabela.css";
+import "../styles/botao-contador.css";
 
 
 class clientes extends React.Component {
@@ -23,7 +23,7 @@ class clientes extends React.Component {
       clientes: [],
       cep: '', // Adicione o estado para o CEP
       estado: '',
-      searchTerm: '',
+      buscarItem: '',
       modalAberta: false
     }
   }
@@ -46,8 +46,8 @@ class clientes extends React.Component {
   cadastrarCliente = (cliente) => {
     fetch("http://localhost:3001/clientes", {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }, // Correção aqui
-      body: JSON.stringify(cliente) // Correção aqui
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cliente)
     })
       .then(resposta => {
         if (resposta.ok) {
@@ -57,10 +57,18 @@ class clientes extends React.Component {
   }
 
   renderTabela() {
-    const { clientes, searchTerm } = this.state;
-    const registrosFiltrados = clientes.filter((cliente) =>
-      cliente.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const { clientes, buscarItem } = this.state;
+    const registrosFiltrados = clientes.filter((cliente) => {
+      const termoBusca = buscarItem.toLowerCase();
+      return (
+        cliente.nome.toLowerCase().includes(termoBusca) ||
+        cliente.email.toLowerCase().includes(termoBusca) ||
+        cliente.endereco.toLowerCase().includes(termoBusca) ||
+        cliente.telefone.includes(buscarItem) ||
+        cliente.cnpj.includes(buscarItem) ||
+        cliente.cidade.toLowerCase().includes(termoBusca)
+      );
+    });
 
     return (
       <div className="tabela">
@@ -208,7 +216,7 @@ class clientes extends React.Component {
   }
   atualizarTermoDePesquisa = (valor) => {
     this.setState({
-      searchTerm: valor
+      buscarItem: valor
     });
   }
 
@@ -224,7 +232,7 @@ class clientes extends React.Component {
           <Modal.Body>
             <Form>
               <Form.Group className="mb-3" controlId="formNome">
-                <Form.Label className="label">Nome</Form.Label>
+                <Form.Label className="label">Nome do Cliente</Form.Label>
                 <Form.Control type="text" placeholder=" Digite aqui..." value={this.state.nome} onChange={(e) => this.atualizarCampo('nome', e.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formEmail">
@@ -271,7 +279,6 @@ class clientes extends React.Component {
             </Button>
           </Modal.Footer>
         </Modal>
-
         <div className="botao-e-contador">
           <Button
             style={{
@@ -286,29 +293,16 @@ class clientes extends React.Component {
               height: '25px',
               fontSize: '13px',
             }}
-            variant='none' type="submit"
-            onClick={this.abrirModal}
-          >
+            variant='none' type="submit" onClick={this.abrirModal}>
             <BsPlusCircle style={{ marginRight: '5px' }} /> Novo Registro
           </Button>
-
-          <input className=" buscar" type="text"
-            placeholder="Buscar..."
-            value={this.state.searchTerm}
-            onChange={(e) => this.atualizarTermoDePesquisa(e.target.value)}
-          />
-
-
+          <input className=" buscar" type="text" placeholder="Buscar..." value={this.state.buscarItem}
+            onChange={(e) => this.atualizarTermoDePesquisa(e.target.value)} />
           <span className="contador"> {this.state.clientes.length} Registros</span>
         </div>
-
-
         {this.renderTabela()}
       </div>
     )
   }
 }
-
-
-
 export default clientes;
